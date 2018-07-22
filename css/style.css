@@ -1087,6 +1087,9 @@ a.article-title:hover {
 #footer a:hover {
   text-decoration: underline;
 }
+#footer .divider {
+  padding: 0 10px;
+}
 #footer-info {
   line-height: 1.6em;
   font-size: 0.85em;
