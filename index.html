@@ -76,7 +76,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/21/this/">this</a>
+      <a class="article-title" href="/2018/07/21/this/">this总结</a>
     </h1>
   
 
@@ -99,7 +99,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    test : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span> === <span class="built_in">window</span>); <span class="comment">// true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params">a</span>)</span>&#123;</span><br><span class="line">    a();</span><br><span class="line">&#125;</span><br><span class="line">app(obj.test);</span><br></pre></td></tr></table></figure>
 <hr>
 <p>tip:当对象的函数属性赋给连另一个对象，通过另一个对象调用这个函数时，this指向的就是调用这个函数的对象。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj1 = &#123;&#125;; </span><br><span class="line"><span class="keyword">var</span> obj2 = &#123;</span><br><span class="line">    test : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span> === obj1); <span class="comment">//true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">obj1.test = obj2.test;</span><br><span class="line">obj1.test();</span><br></pre></td></tr></table></figure></p>
-<h3 id="2-3-构造函数"><a href="#2-3-构造函数" class="headerlink" title="2.3 构造函数"></a>2.3 构造函数</h3><p>函数作为构造函数，通常函数名的首字母大写，此时this指向的是新创建的对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function Obj(name) &#123;</span><br><span class="line">    this.name = name;</span><br><span class="line">&#125;</span><br><span class="line">var obj1 = new Obj(&apos;test&apos;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-3-构造函数"><a href="#2-3-构造函数" class="headerlink" title="2.3 构造函数"></a>2.3 构造函数</h3><p>函数作为构造函数，通常函数名的首字母大写，此时this指向的是新创建的对象。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Obj</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj1 = <span class="keyword">new</span> Obj(<span class="string">'test'</span>);</span><br></pre></td></tr></table></figure></p>
 <hr>
 <p>tip：使用new操作符，通过造函数创建对象经过了4个过程：1）创建一个新对象；2）将构造函数的作用域赋给新对象【因此this就指向这个新对象】；3）执行构造函数中的代码；4）返回新对象</p>
 <h3 id="2-4-apply-和-call"><a href="#2-4-apply-和-call" class="headerlink" title="2.4 apply 和 call"></a>2.4 apply 和 call</h3><p>Functioin.prototype.call 和 Function.prototype.apply可以为函数中的this绑定特定的对象。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj1 = &#123;</span><br><span class="line">    name1: <span class="string">'obj1'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> obj2 = &#123;</span><br><span class="line">    name2: <span class="string">'obj2'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>[name]);</span><br><span class="line">&#125;</span><br><span class="line">test.apply(obj1, [<span class="string">'name1'</span>]);<span class="comment">// 'obj1'</span></span><br><span class="line">test.call(obj2, <span class="string">'name2'</span>); <span class="comment">// 'obj2'</span></span><br></pre></td></tr></table></figure></p>
@@ -119,7 +119,7 @@
 <p>如果一个事件的属性( 例如. onClick)是指定在一个HTML的元素上的，则这个属性中的JavaScript语句实际上会被包裹在一个处理函数中，在这个处理函数中使用this的效果和使用addEventListener来绑定事件的效果是一样的； this的出现代表了元素的引用。注意到在一个函数里this调用的的效果和标准规则里面是一样的。</p>
 </blockquote>
 <p>click1中this是包裹在处理函数中，此时的this就是处理函数的this，即dom节点。<br>click2被包裹在处理函数中，这个一个立即执行函数，此时的this相当于简单调用，所以是window。<br>click3是相当于是对象属性方法的调用，所以this是dom节点。<br>click4是包裹在处理函数中，相当于函数中简单函数调用，所以此时是window。</p>
-<h3 id="2-6-回调函数"><a href="#2-6-回调函数" class="headerlink" title="2.6 回调函数"></a>2.6 回调函数</h3><p>回调函数中的this，相当于是简单调用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(function()&#123;</span><br><span class="line">    console.log(this === window); // true</span><br><span class="line">&#125;,1000);</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-6-回调函数"><a href="#2-6-回调函数" class="headerlink" title="2.6 回调函数"></a>2.6 回调函数</h3><p>回调函数中的this，相当于是简单调用。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span> === <span class="built_in">window</span>); <span class="comment">// true</span></span><br><span class="line">&#125;,<span class="number">1000</span>);</span><br></pre></td></tr></table></figure></p>
 <h2 id="3-箭头函数"><a href="#3-箭头函数" class="headerlink" title="3 箭头函数"></a>3 箭头函数</h2><p>ES6中新加入了箭头函数，箭头函数中没有this绑定，所以箭头函数中的this是通过<strong>作用域链</strong>来确定的，且不能通过call，apply或bind改变this的值。</p>
 <p>箭头函数中的this是由其外层最近函数（不是箭头函数）中的this决定的。相当于是从作用域链中查找变量this，而作用域链是代码所在的位置决定的。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    test:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="keyword">this</span> === obj);</span><br><span class="line">        &#125;, <span class="number">1000</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.test(); <span class="comment">// true</span></span><br><span class="line"><span class="keyword">var</span> fn = obj.test; </span><br><span class="line">fn(); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
@@ -128,9 +128,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://clairehu3264.github.io/2018/07/21/this/" data-id="cjjvjeylo0000isvmysdbq8ro" class="article-share-link">Share</a>
+      <a data-url="https://clairehu3264.github.io/2018/07/21/this/" data-id="cjjwxq2jw0000wwvmlhjssqj3" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
     </footer>
   </div>
   
@@ -148,9 +150,23 @@
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a>
+    </div>
+  </div>
+
   
     
   <div class="widget-wrap">
@@ -169,7 +185,7 @@
       <ul>
         
           <li>
-            <a href="/2018/07/21/this/">this</a>
+            <a href="/2018/07/21/this/">this总结</a>
           </li>
         
       </ul>
@@ -186,6 +202,9 @@
     <div id="footer-info" class="inner">
       &copy; 2018 Claire Hu<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      <span>|</span>
+      <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
     </div>
   </div>
 </footer>
